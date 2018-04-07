@@ -13,11 +13,11 @@
     
     <item>
       <title>Flutter Webview Application</title>
-      <link>/blog/creating-a-new-theme/</link>
+      <link>/blog/flutter-webview-application/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/creating-a-new-theme/</guid>
-      <description> Introduction </description>
+      <guid>/blog/flutter-webview-application/</guid>
+      <description>Flutter Webview app for a mobile optimized webpage Motivation  My website was built for mobile. It works just fine on a mobile browser. But now I wanted to have an app for the same. Though I had fairly good android development experience, but it was quite sometime ago. And also, lately I had been swarmed with articles about flutter and its usage. So it was time for me to build something with flutter.</description>
     </item>
     
   </channel>

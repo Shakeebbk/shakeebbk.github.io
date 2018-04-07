@@ -4,3 +4,14 @@
   is an official part of the theme (ex. Pull Requests) should be included in main.css
   within the formating given.
 */
+div.polaroid {
+  width: 250px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+div.container {
+  text-align: center;
+  padding: 5px 15px;
+}
