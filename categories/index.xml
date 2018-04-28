@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Alexa Skills</title>
+      <link>/categories/alexa-skills/</link>
+      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/alexa-skills/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Android</title>
       <link>/categories/android/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
@@ -35,6 +44,15 @@
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/categories/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Node JS</title>
+      <link>/categories/node-js/</link>
+      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/node-js/</guid>
       <description></description>
     </item>
     

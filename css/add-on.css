@@ -11,6 +11,13 @@ div.polaroid {
   margin-bottom: 25px;
 }
 
+div.polaroid01 {
+  width: 800px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
 div.container {
   text-align: center;
   padding: 5px 15px;

@@ -12,6 +12,18 @@
     
     
     <item>
+      <title>A Real World Alexa Skill</title>
+      <link>/blog/alexa-gold-rate-skill/</link>
+      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/alexa-gold-rate-skill/</guid>
+      <description>Building a Real World Alexa Skill Motivation We all know amazon provides a very good platform to develop skills for its voice assistant Alexa. Getting started on the platform is pretty simple and straight forward following amazon&amp;rsquo;s getting started tutorials.
+ Now I wanted to build a real world skill.
+ Requirements Requirements that I wanted to achieve
+ Get prevailing 22 carat gold prices in India and in some of the major Indian cities Acquire the prices from a dependable source  So there were two main parts to the implementation.</description>
+    </item>
+    
+    <item>
       <title>Flutter Webview Application</title>
       <link>/blog/flutter-webview-application/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>

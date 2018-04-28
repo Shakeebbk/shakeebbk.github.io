@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Mobile on Hack It Up</title>
-    <link>/tags/mobile/</link>
-    <description>Recent content in Mobile on Hack It Up</description>
+    <title>Alexa on Hack It Up</title>
+    <link>/tags/alexa/</link>
+    <description>Recent content in Alexa on Hack It Up</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 07 Apr 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/mobile/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/alexa/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -21,15 +21,6 @@
  Now I wanted to build a real world skill.
  Requirements Requirements that I wanted to achieve
  Get prevailing 22 carat gold prices in India and in some of the major Indian cities Acquire the prices from a dependable source  So there were two main parts to the implementation.</description>
-    </item>
-    
-    <item>
-      <title>Flutter Webview Application</title>
-      <link>/blog/flutter-webview-application/</link>
-      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/flutter-webview-application/</guid>
-      <description>Flutter Webview app for a mobile optimized webpage Motivation  My website was built for mobile. It works just fine on a mobile browser. But now I wanted to have an app for the same. Though I had fairly good android development experience, but it was quite sometime ago. And also, lately I had been swarmed with articles about flutter and its usage. So it was time for me to build something with flutter.</description>
     </item>
     
   </channel>
