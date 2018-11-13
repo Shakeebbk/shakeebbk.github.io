@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/academic-papers/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/alexa-gold-rate-skill/</loc>
     <lastmod>2018-04-07T00:00:00+00:00</lastmod>
   </url>
@@ -24,19 +29,7 @@
   </url>
   
   <url>
-    <loc>/tags/alexa/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/categories/alexa-skills/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/amazon/</loc>
     <lastmod>2018-04-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -48,14 +41,8 @@
   </url>
   
   <url>
-    <loc>/tags/application/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/blog/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -70,12 +57,6 @@
   </url>
   
   <url>
-    <loc>/tags/flutter/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/categories/flutter/</loc>
     <lastmod>2018-04-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -83,6 +64,72 @@
   
   <url>
     <loc>/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/ios/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/latex/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/markdown/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/node-js/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/pandoc/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/academic/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/alexa/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/amazon/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/application/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/flutter/</loc>
     <lastmod>2018-04-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -94,8 +141,20 @@
   </url>
   
   <url>
-    <loc>/categories/ios/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <loc>/tags/ieee/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/linux/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/markdown/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -106,14 +165,26 @@
   </url>
   
   <url>
-    <loc>/categories/node-js/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <loc>/tags/papers/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <loc>/tags/productivity/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/research/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/text/</loc>
+    <lastmod>2018-11-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

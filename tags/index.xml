@@ -21,7 +21,16 @@
     </item>
     
     <item>
-      <title>Alexa</title>
+      <title>academic</title>
+      <link>/tags/academic/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/academic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>alexa</title>
       <link>/tags/alexa/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -30,7 +39,7 @@
     </item>
     
     <item>
-      <title>Amazon</title>
+      <title>amazon</title>
       <link>/tags/amazon/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -39,7 +48,7 @@
     </item>
     
     <item>
-      <title>Application</title>
+      <title>application</title>
       <link>/tags/application/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -48,7 +57,7 @@
     </item>
     
     <item>
-      <title>Flutter</title>
+      <title>flutter</title>
       <link>/tags/flutter/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -57,7 +66,7 @@
     </item>
     
     <item>
-      <title>Hybrid</title>
+      <title>hybrid</title>
       <link>/tags/hybrid/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -66,11 +75,74 @@
     </item>
     
     <item>
-      <title>Mobile</title>
+      <title>ieee</title>
+      <link>/tags/ieee/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ieee/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>/tags/linux/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>markdown</title>
+      <link>/tags/markdown/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mobile</title>
       <link>/tags/mobile/</link>
       <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/mobile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>papers</title>
+      <link>/tags/papers/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/papers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>productivity</title>
+      <link>/tags/productivity/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/productivity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>research</title>
+      <link>/tags/research/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/research/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>text</title>
+      <link>/tags/text/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/text/</guid>
       <description></description>
     </item>
     

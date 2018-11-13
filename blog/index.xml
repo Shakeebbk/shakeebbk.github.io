@@ -6,10 +6,21 @@
     <description>Recent content in Blog on Hack It Up</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Writing IEEE Standard Academic Papers in Markdown</title>
+      <link>/blog/academic-papers/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/academic-papers/</guid>
+      <description>Writing IEEE Standard Academic Papers in Markdown Motivation To have a simple text based system to write academic papers and not worry about the formatting. At the end we could generate a pdf properly formatted as per IEEE standard and works across platforms making the entire setup portable.
+ Bring back the focus on writing the content than spending time on formatting the document.
+ The Setup Mostly follow up the link to install required software.</description>
+    </item>
     
     <item>
       <title>A Real World Alexa Skill</title>
