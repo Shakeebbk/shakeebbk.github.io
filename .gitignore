@@ -1,0 +1,8 @@
+# Travel Vault — plaintext source-of-truth (never commit).
+# The committed travel-vault/assets/data.js is the AES-GCM-encrypted blob.
+travel-vault/assets/data.plain.js
+
+# Editor / OS noise
+.DS_Store
+._.DS_Store
+*.swp

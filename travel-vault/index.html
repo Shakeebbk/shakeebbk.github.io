@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lifetime Travel Vault</title>
+<meta name="description" content="A confidential portfolio of audited expeditions, ledgers, and behavioral insights.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-eyebrow">Confidential</div>
+    <h1>Travel Vault</h1>
+    <p class="login-sub">Enter the master key to open the portfolio.</p>
+    <input type="password" id="key-input" placeholder="••••••••" autocomplete="off" spellcheck="false">
+    <button id="login-btn">Unlock</button>
+    <div id="login-error" hidden>That key didn't match. Try again.</div>
+    <div class="login-footnote">Traveller Intelligence Vault</div>
+  </div>
+</div>
+
+<!-- VAULT -->
+<main id="vault" hidden>
+
+  <header class="masthead-bar">
+    <div class="wrap">
+      <div class="brand">Travel Vault<span class="gold-dot">.</span></div>
+      <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#expeditions">Expeditions</a>
+        <a href="#profile">Profile</a>
+        <button data-logout type="button">Lock</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eyebrow">Lifetime Portfolio · As of <span id="hero-asof"></span></div>
+      <h1>A lifetime of<br><em>quiet expeditions</em>,<br>carefully audited.</h1>
+      <p class="hero-deck">
+        From flagship Taj suites on Dal Lake to roadside Maggi in glacial meadows —
+        every ledger, every shawl procured at origin, every dedicated SUV corridor.
+        This is the confidential portfolio of a deliberate traveller.
+      </p>
+      <div class="hero-meta">
+        <span>Expeditions<strong id="hm-trips"></strong></span>
+        <span>Lifetime Capex<strong id="hm-total"></strong></span>
+        <span>Stay Anchor<strong id="hm-stay"></strong></span>
+        <span>Doctrine<strong>Premium · Authentic · Dedicated</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="tight" id="dashboard">
+    <div class="wrap">
+      <div class="eyebrow">Executive summary</div>
+      <h2 class="section-title">Portfolio at a glance</h2>
+      <div class="rule-thick" style="margin-bottom:36px"></div>
+      <div class="stat-grid" id="landing-stats"></div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD TABLE -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="eyebrow">Section I</div>
+      <h2 class="section-title">Master Location Intelligence</h2>
+      <p class="section-deck">Every audited expedition, ordered by capital deployment.</p>
+      <div id="landing-dashboard"></div>
+    </div>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="eyebrow">Section II</div>
+      <h2 class="section-title">Structural splits</h2>
+      <p class="section-deck">How lifetime capital distributes — by destination and by category.</p>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>By destination</h3>
+          <div class="chart-sub">Where the money went, region by region.</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-destinations"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>By category</h3>
+          <div class="chart-sub">Optimized asset allocation across structural categories.</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-categories"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEHAVIORAL PROFILE -->
+  <section id="profile">
+    <div class="wrap">
+      <div class="eyebrow">Section III</div>
+      <h2 class="section-title">Traveller behavioral profile</h2>
+      <p class="section-deck">
+        Four doctrines that surface consistently across every expedition,
+        regardless of terrain or season.
+      </p>
+      <div class="profile-grid" id="landing-profile"></div>
+    </div>
+  </section>
+
+  <!-- TRIPS -->
+  <section id="expeditions">
+    <div class="wrap">
+      <div class="eyebrow">Section IV</div>
+      <h2 class="section-title">The expeditions</h2>
+      <p class="section-deck">Each entry opens a full audited ledger and timeline.</p>
+      <div class="trips-grid" id="landing-trips"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="vault-footer">
+    <div class="wrap">
+      <div class="mark">
+        <span class="conf">Confidential // Traveller Intelligence Vault</span>
+        Curated portfolio · updated <span id="foot-asof"></span>
+      </div>
+      <div class="actions">
+        <button data-logout type="button">Lock Vault</button>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>window.PAGE_KIND = 'landing';</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/render.js"></script>
+<script src="assets/auth.js"></script>
+<script>
+  // Small textual bindings that don't depend on heavy renderers.
+  document.addEventListener('vault:unlocked', () => {
+    document.getElementById('hero-asof').textContent = VAULT.asOf;
+    document.getElementById('foot-asof').textContent = VAULT.asOf;
+    document.getElementById('hm-trips').textContent = String(VAULT.trips.length).padStart(2, '0');
+    document.getElementById('hm-total').textContent = '₹' + Math.round(VAULT.lifetimeTotal).toLocaleString('en-IN');
+    const stay = VAULT.categorySplit.find(c => c.category.startsWith('Accommodation')).share;
+    document.getElementById('hm-stay').textContent = stay.toFixed(1) + '%';
+  });
+</script>
+
+</body>
+</html>
