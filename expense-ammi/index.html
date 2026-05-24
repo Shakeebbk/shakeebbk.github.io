@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Expense Tracker</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --accent: #f0a500;
+  --green: #f0a500;
+  --red: #f85149;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --border: #30363d;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+.container { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+/* Login */
+#login-screen {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; min-height: 100vh; padding: 24px;
+}
+#login-screen h1 { font-size: 28px; margin-bottom: 8px; }
+#login-screen p { color: var(--muted); margin-bottom: 32px; }
+#login-screen input {
+  width: 100%; max-width: 320px; padding: 16px; font-size: 18px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  color: var(--text); text-align: center; margin-bottom: 16px;
+}
+#login-screen input:focus { outline: none; border-color: var(--accent); }
+#login-btn {
+  width: 100%; max-width: 320px; padding: 16px; font-size: 18px;
+  background: var(--accent); color: #fff; border: none; border-radius: 12px;
+  cursor: pointer; font-weight: 600;
+}
+#login-btn:active { transform: scale(0.98); }
+#login-error { color: var(--red); margin-top: 12px; display: none; }
+
+/* Dashboard */
+#app { display: none; }
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; margin-bottom: 8px;
+}
+.header h2 { font-size: 20px; }
+.logout-btn {
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer;
+}
+
+/* Balance Card — sticky */
+.balance-card {
+  background: var(--card); border-radius: 16px; padding: 28px 24px;
+  text-align: center; margin-bottom: 20px;
+  position: sticky; top: 0; z-index: 5;
+}
+.balance-card .label { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+.balance-card .amount { font-size: 42px; font-weight: 700; }
+.balance-card .status { font-size: 14px; margin-top: 8px; font-weight: 500; }
+.positive { color: var(--green); }
+.negative { color: var(--red); }
+
+/* Add Button */
+.add-btn {
+  position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px;
+  background: var(--accent); color: #fff; border: none; border-radius: 50%;
+  font-size: 32px; cursor: pointer; box-shadow: 0 4px 20px rgba(240,165,0,0.4);
+  z-index: 10; display: flex; align-items: center; justify-content: center;
+}
+.add-btn:active { transform: scale(0.92); }
+
+/* Entry Form Overlay */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 20; display: none; align-items: flex-end; justify-content: center;
+}
+.overlay.active { display: flex; }
+.form-sheet {
+  background: var(--card); width: 100%; max-width: 480px;
+  border-radius: 20px 20px 0 0; padding: 24px; padding-bottom: 40px;
+  animation: slideUp 0.25s ease-out;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.form-sheet h3 { margin-bottom: 20px; font-size: 20px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.form-group input {
+  width: 100%; padding: 14px; font-size: 16px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text);
+}
+.form-group input:focus { outline: none; border-color: var(--accent); }
+.type-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.type-tab {
+  padding: 10px 0; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border); border-radius: 8px; cursor: pointer; text-align: center;
+  background: var(--bg); color: var(--muted); transition: all 0.2s;
+}
+.type-tab.active-pos { background: var(--green); color: #fff; border-color: var(--green); }
+.type-tab.active-neg { background: var(--red); color: #fff; border-color: var(--red); }
+.calc-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.op-buttons { display: flex; gap: 8px; margin-top: 8px; }
+.op-btn {
+  flex: 1; padding: 10px 0; font-size: 18px; font-weight: 700;
+  background: var(--bg); color: var(--accent); border: 1px solid var(--border);
+  border-radius: 8px; cursor: pointer; text-align: center;
+}
+.op-btn:active { background: var(--border); }
+.form-actions { display: flex; gap: 10px; margin-top: 20px; }
+.form-actions button {
+  flex: 1; padding: 14px; font-size: 16px; border-radius: 10px;
+  border: none; cursor: pointer; font-weight: 600;
+}
+.cancel-btn { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+.submit-btn { background: var(--accent); color: #fff; }
+.submit-btn:disabled { opacity: 0.5; }
+
+/* Entries List */
+.section-title { font-size: 16px; color: var(--muted); margin-bottom: 12px; }
+.entries-list { padding-bottom: 100px; }
+.entry-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px; background: var(--card); border-radius: 12px;
+  margin-bottom: 8px; cursor: pointer;
+}
+.entry-item.readonly { cursor: default; }
+.entry-item:active:not(.readonly) { opacity: 0.7; }
+.entry-info .entry-desc { font-size: 15px; margin-bottom: 2px; }
+.entry-info .entry-date { font-size: 12px; color: var(--muted); }
+.entry-amount { font-size: 16px; font-weight: 600; white-space: nowrap; }
+
+/* Loading */
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 2px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-state { text-align: center; padding: 40px; color: var(--muted); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+  background: var(--card); color: var(--text); padding: 12px 24px;
+  border-radius: 10px; font-size: 14px; z-index: 30;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  animation: fadeInUp 0.3s ease-out;
+}
+@keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <h1>Expense Tracker</h1>
+  <p>Enter master key to continue</p>
+  <input type="password" id="key-input" placeholder="Master key" autocomplete="off">
+  <button id="login-btn" onclick="login()">Unlock</button>
+  <div id="login-error">Wrong key. Try again.</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="container">
+    <div class="header">
+      <h2>Expenses</h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="balance-card">
+      <div class="label">Total Balance</div>
+      <div class="amount" id="total-amount">--</div>
+      <div class="status" id="balance-status"></div>
+    </div>
+
+    <div class="section-title">Entries</div>
+    <div class="entries-list" id="entries-list">
+      <div class="loading-state"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <button class="add-btn" onclick="openForm()">+</button>
+</div>
+
+<!-- ENTRY FORM OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="form-sheet">
+    <h3 id="form-title">Add Entry</h3>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="entry-date">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" id="entry-desc" placeholder="e.g. Groceries">
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <div class="type-tabs">
+        <button class="type-tab active-pos" id="tab-ipaid" onclick="setType('ipaid')">I Paid (+)</button>
+        <button class="type-tab" id="tab-iowe" onclick="setType('iowe')">I Owe (−)</button>
+        <button class="type-tab" id="tab-theypaid" onclick="setType('theypaid')">They Paid (−)</button>
+        <button class="type-tab" id="tab-theyowe" onclick="setType('theyowe')">They Owe (+)</button>
+      </div>
+      <label>Amount</label>
+      <input type="text" id="entry-amount" placeholder="500+200+100" inputmode="numeric"
+             oninput="calcPreview()" style="width:100%">
+      <div class="op-buttons">
+        <button type="button" class="op-btn" onclick="insertOp('+')">+</button>
+        <button type="button" class="op-btn" onclick="insertOp('-')">−</button>
+        <button type="button" class="op-btn" onclick="insertOp('*')">×</button>
+        <button type="button" class="op-btn" onclick="insertOp('/')">÷</button>
+      </div>
+      <div class="calc-hint" id="calc-hint"></div>
+    </div>
+    <div class="form-actions">
+      <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+      <button class="submit-btn" id="submit-btn" onclick="submitEntry()">Add Entry</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== CONFIG =====
+// After deploying the Apps Script, paste the web app URL here:
+const SCRIPT_URL = 'https://script.google.com/macros/s/REDACTED_URL/exec';
+
+// SHA-256 hash of the master key
+const VALID_HASH = 'REDACTED_HASH';
+
+let keyHash = '';
+let entryType = 'ipaid'; // ipaid (+), iowe (-), theypaid (-), theyowe (+)
+let editingRow = null; // null = adding new, number = editing existing row
+let cachedEntries = []; // cache for edit lookups
+
+// ===== AUTH =====
+async function sha256(text) {
+  // crypto.subtle requires secure context (HTTPS); fallback for HTTP
+  if (window.crypto && crypto.subtle) {
+    const data = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  // Pure JS SHA-256 fallback
+  function rr(n,x){return(x>>>n)|(x<<(32-n));}
+  const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  let H0=0x6a09e667,H1=0xbb67ae85,H2=0x3c6ef372,H3=0xa54ff53a,
+      H4=0x510e527f,H5=0x9b05688c,H6=0x1f83d9ab,H7=0x5be0cd19;
+  const bytes=new TextEncoder().encode(text);
+  const bits=bytes.length*8;
+  const pad=[...bytes,0x80];
+  while(pad.length%64!==56) pad.push(0);
+  for(let i=7;i>=0;i--) pad.push((bits/(2**(i*8)))&0xff);
+  for(let off=0;off<pad.length;off+=64){
+    const w=new Array(64);
+    for(let i=0;i<16;i++) w[i]=(pad[off+i*4]<<24)|(pad[off+i*4+1]<<16)|(pad[off+i*4+2]<<8)|pad[off+i*4+3];
+    for(let i=16;i<64;i++){
+      const s0=rr(7,w[i-15])^rr(18,w[i-15])^(w[i-15]>>>3);
+      const s1=rr(17,w[i-2])^rr(19,w[i-2])^(w[i-2]>>>10);
+      w[i]=(w[i-16]+s0+w[i-7]+s1)|0;
+    }
+    let a=H0,b=H1,c=H2,d=H3,e=H4,f=H5,g=H6,h=H7;
+    for(let i=0;i<64;i++){
+      const S1=rr(6,e)^rr(11,e)^rr(25,e);
+      const ch=(e&f)^(~e&g);
+      const t1=(h+S1+ch+K[i]+w[i])|0;
+      const S0=rr(2,a)^rr(13,a)^rr(22,a);
+      const maj=(a&b)^(a&c)^(b&c);
+      const t2=(S0+maj)|0;
+      h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;
+    }
+    H0=(H0+a)|0;H1=(H1+b)|0;H2=(H2+c)|0;H3=(H3+d)|0;
+    H4=(H4+e)|0;H5=(H5+f)|0;H6=(H6+g)|0;H7=(H7+h)|0;
+  }
+  return [H0,H1,H2,H3,H4,H5,H6,H7].map(v=>(v>>>0).toString(16).padStart(8,'0')).join('');
+}
+
+async function login() {
+  const input = document.getElementById('key-input').value;
+  const hash = await sha256(input);
+  if (hash === VALID_HASH) {
+    keyHash = hash;
+    localStorage.setItem('expense_key', hash);
+    showApp();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('expense_key');
+  keyHash = '';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('key-input').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+async function checkAuth() {
+  const stored = localStorage.getItem('expense_key');
+  if (stored === VALID_HASH) {
+    keyHash = stored;
+    showApp();
+  }
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  fetchData();
+}
+
+// Enter key to login
+document.getElementById('key-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') login();
+});
+
+// ===== DATA =====
+async function fetchData() {
+  document.getElementById('entries-list').innerHTML =
+    '<div class="loading-state"><div class="spinner"></div></div>';
+
+  try {
+    const res = await fetch(SCRIPT_URL + '?key=' + encodeURIComponent(keyHash));
+    const data = await res.json();
+
+    if (data.error) {
+      toast('Auth failed. Please re-login.');
+      logout();
+      return;
+    }
+
+    cachedEntries = data.entries;
+    renderBalance(data.total);
+    renderEntries(data.entries);
+  } catch (err) {
+    document.getElementById('entries-list').innerHTML =
+      '<div class="loading-state">Failed to load. Check your connection.</div>';
+  }
+}
+
+function renderBalance(total) {
+  const el = document.getElementById('total-amount');
+  const status = document.getElementById('balance-status');
+  const abs = Math.abs(total).toLocaleString('en-IN');
+
+  if (total > 0) {
+    el.textContent = '\u20B9' + abs;
+    el.className = 'amount positive';
+    status.textContent = 'They owe you';
+    status.className = 'status positive';
+  } else if (total < 0) {
+    el.textContent = '\u20B9' + abs;
+    el.className = 'amount negative';
+    status.textContent = 'You owe them';
+    status.className = 'status negative';
+  } else {
+    el.textContent = '\u20B90';
+    el.className = 'amount';
+    status.textContent = 'All settled';
+    status.className = 'status';
+  }
+}
+
+function renderEntries(entries) {
+  const list = document.getElementById('entries-list');
+  // Show all entries, most recent first
+  const all = entries.slice().reverse();
+
+  if (all.length === 0) {
+    list.innerHTML = '<div class="loading-state">No entries yet</div>';
+    return;
+  }
+
+  list.innerHTML = all.map((e, idx) => {
+    const sign = e.amount >= 0 ? 'positive' : 'negative';
+    const prefix = e.amount >= 0 ? '+' : '';
+    const display = prefix + '\u20B9' + Math.abs(e.amount).toLocaleString('en-IN');
+    const date = e.date || '';
+    const desc = e.description || '(no description)';
+    const editable = e.row ? true : false;
+    const clickHandler = editable ? `onclick="openEditForm(${entries.length - 1 - idx})"` : '';
+    const readonlyClass = editable ? '' : ' readonly';
+    return `<div class="entry-item${readonlyClass}" ${clickHandler}>
+      <div class="entry-info">
+        <div class="entry-desc">${escHtml(desc)}</div>
+        <div class="entry-date">${escHtml(date)}</div>
+      </div>
+      <div class="entry-amount ${sign}">${display}</div>
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ===== ADD / EDIT ENTRY =====
+function openForm() {
+  editingRow = null;
+  document.getElementById('form-title').textContent = 'Add Entry';
+  document.getElementById('submit-btn').textContent = 'Add Entry';
+  document.getElementById('entry-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('entry-desc').value = '';
+  document.getElementById('entry-amount').value = '';
+  document.getElementById('calc-hint').textContent = '';
+  entryType = 'ipaid';
+  updateTabs();
+  document.getElementById('overlay').classList.add('active');
+}
+
+function openEditForm(entryIndex) {
+  const entry = cachedEntries[entryIndex];
+  if (!entry || !entry.row) return;
+
+  editingRow = entry.row;
+  document.getElementById('form-title').textContent = 'Edit Entry';
+  document.getElementById('submit-btn').textContent = 'Save';
+
+  // Parse date — try to convert to YYYY-MM-DD for the date input
+  let dateVal = '';
+  if (entry.date) {
+    const d = new Date(entry.date);
+    if (!isNaN(d.getTime())) {
+      dateVal = d.toISOString().split('T')[0];
+    } else {
+      dateVal = entry.date;
+    }
+  }
+  document.getElementById('entry-date').value = dateVal;
+  document.getElementById('entry-desc').value = entry.description || '';
+  document.getElementById('entry-amount').value = Math.abs(entry.amount).toString();
+  entryType = entry.amount >= 0 ? 'ipaid' : 'iowe';
+  updateTabs();
+  calcPreview();
+  document.getElementById('overlay').classList.add('active');
+}
+
+function closeForm() {
+  document.getElementById('overlay').classList.remove('active');
+  editingRow = null;
+}
+
+function closeOverlay(e) {
+  if (e.target === document.getElementById('overlay')) closeForm();
+}
+
+function setType(type) {
+  entryType = type;
+  updateTabs();
+  calcPreview();
+}
+
+function isPositiveType() {
+  return entryType === 'ipaid' || entryType === 'theyowe';
+}
+
+function updateTabs() {
+  const tabs = ['ipaid', 'iowe', 'theypaid', 'theyowe'];
+  tabs.forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    const isActive = entryType === t;
+    const isPos = t === 'ipaid' || t === 'theyowe';
+    el.className = 'type-tab' + (isActive ? (isPos ? ' active-pos' : ' active-neg') : '');
+  });
+}
+
+function insertOp(op) {
+  const input = document.getElementById('entry-amount');
+  const pos = input.selectionStart;
+  const val = input.value;
+  input.value = val.slice(0, pos) + op + val.slice(pos);
+  input.focus();
+  input.selectionStart = input.selectionEnd = pos + 1;
+  calcPreview();
+}
+
+function calcPreview() {
+  const raw = document.getElementById('entry-amount').value.trim();
+  const hint = document.getElementById('calc-hint');
+  if (!raw) { hint.textContent = ''; return; }
+
+  // Only allow digits, +, -, *, /, ., and spaces
+  if (!/^[\d+\-*/.\s]+$/.test(raw)) {
+    hint.textContent = 'Invalid characters';
+    return;
+  }
+
+  try {
+    const val = Function('"use strict"; return (' + raw + ')')();
+    if (typeof val === 'number' && isFinite(val)) {
+      const sign = isPositiveType() ? '+' : '\u2212';
+      hint.textContent = '= ' + sign + '\u20B9' + Math.abs(val).toLocaleString('en-IN');
+    } else {
+      hint.textContent = '';
+    }
+  } catch {
+    hint.textContent = '';
+  }
+}
+
+function evaluateAmount(raw) {
+  if (!raw || !/^[\d+\-*/.\s]+$/.test(raw)) return NaN;
+  try {
+    const val = Function('"use strict"; return (' + raw + ')')();
+    return (typeof val === 'number' && isFinite(val)) ? val : NaN;
+  } catch { return NaN; }
+}
+
+async function submitEntry() {
+  const date = document.getElementById('entry-date').value;
+  const desc = document.getElementById('entry-desc').value.trim();
+  const rawAmt = document.getElementById('entry-amount').value.trim();
+
+  if (!desc) { toast('Enter a description'); return; }
+
+  const amount = evaluateAmount(rawAmt);
+  if (isNaN(amount) || amount === 0) { toast('Enter a valid amount'); return; }
+
+  const finalAmount = isPositiveType() ? Math.abs(amount) : -Math.abs(amount);
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  const isEditing = editingRow !== null;
+  btn.textContent = isEditing ? 'Saving...' : 'Adding...';
+
+  try {
+    const payload = {
+      key: keyHash,
+      date: date,
+      description: desc,
+      amount: finalAmount
+    };
+
+    if (isEditing) {
+      payload.action = 'edit';
+      payload.row = editingRow;
+    }
+
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      toast(isEditing ? 'Entry updated!' : 'Entry added!');
+      closeForm();
+      fetchData();
+    } else {
+      toast('Error: ' + (data.error || 'Unknown'));
+    }
+  } catch (err) {
+    toast('Network error. Try again.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = isEditing ? 'Save' : 'Add Entry';
+}
+
+// ===== TOAST =====
+function toast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ===== INIT =====
+checkAuth();
+</script>
+</body>
+</html>
