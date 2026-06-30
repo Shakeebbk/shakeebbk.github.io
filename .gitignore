@@ -6,3 +6,7 @@ travel-vault/assets/data.plain.js
 .DS_Store
 ._.DS_Store
 *.swp
+
+# Local runtime secrets
+.env
+.env.*

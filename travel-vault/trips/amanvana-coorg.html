@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expedition · Travel Vault</title>
+<meta name="description" content="An audited expedition from the Travel Vault portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-eyebrow">Confidential</div>
+    <h1>Travel Vault</h1>
+    <p class="login-sub">Enter the master key to open the portfolio.</p>
+    <input type="password" id="key-input" placeholder="••••••••" autocomplete="off" spellcheck="false">
+    <button id="login-btn">Unlock</button>
+    <div id="login-error" hidden>That key didn't match. Try again.</div>
+    <div class="login-footnote">Traveller Intelligence Vault</div>
+  </div>
+</div>
+
+<!-- VAULT -->
+<main id="vault" hidden>
+
+  <header class="masthead-bar">
+    <div class="wrap">
+      <div class="brand"><a href="../index.html">Travel Vault<span class="gold-dot">.</span></a></div>
+      <nav>
+        <a href="../index.html#dashboard">Dashboard</a>
+        <a href="../index.html#expeditions">All expeditions</a>
+        <a href="../index.html#profile">Profile</a>
+        <button data-logout type="button">Lock</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- TRIP HERO -->
+  <section class="trip-page-hero" id="trip-hero">
+    <div class="hero-glyph" id="trip-glyph"></div>
+    <div class="wrap">
+      <a class="back-link" href="../index.html#expeditions">Back to vault</a>
+      <div class="vibe-chip" id="trip-vibe"></div>
+      <h1 id="trip-name"></h1>
+      <p class="headline" id="trip-headline"></p>
+      <div class="hero-meta-line">
+        <span>Dates<strong id="meta-dates"></strong></span>
+        <span>Region<strong id="meta-region"></strong></span>
+        <span>Duration<strong id="meta-nights"></strong></span>
+        <span>Vibe<strong id="meta-vibe"></strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS ROW (overlapping hero) -->
+  <section class="tight" style="padding-top:0">
+    <div class="wrap">
+      <div class="trip-stats" id="trip-stats"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY DONUT -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="eyebrow">Capital allocation</div>
+      <h2 class="section-title">Where it went</h2>
+      <p class="section-deck">Category split for this expedition.</p>
+      <div class="chart-card" style="max-width:720px">
+        <h3>By category</h3>
+        <div class="chart-sub">Structural breakdown of the segment archive.</div>
+        <div class="chart-canvas-wrap"><canvas id="trip-donut"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEDGER / SUMMARY -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="eyebrow">Granular ledger</div>
+      <h2 class="section-title">The full record</h2>
+      <p class="section-deck">Every line item from the audited archive, chronologically.</p>
+      <div id="trip-content"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="vault-footer">
+    <div class="wrap">
+      <div class="mark">
+        <span class="conf">Confidential // Traveller Intelligence Vault</span>
+        Segment archive · sourced from master ledger
+      </div>
+      <div class="actions">
+        <a href="../index.html" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding-bottom:4px;">← Back to vault</a>
+        <button data-logout type="button">Lock Vault</button>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  window.PAGE_KIND = 'trip';
+  window.TRIP_SLUG = 'amanvana-coorg';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="../assets/data.js"></script>
+<script src="../assets/render.js"></script>
+<script src="../assets/auth.js"></script>
+
+</body>
+</html>
