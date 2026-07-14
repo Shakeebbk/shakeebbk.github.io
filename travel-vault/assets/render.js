@@ -135,6 +135,111 @@ function renderTripCards(elId) {
 }
 
 // ===========================================================
+// Journey map + timeline
+// ===========================================================
+
+// Natural Earth 1:110m India outline (public domain), stored locally so
+// decrypted locations never trigger requests to a third-party map service.
+const INDIA_OUTLINE = [[97.327114,28.261583],[97.402561,27.882536],[97.051989,27.699059],[97.133999,27.083774],[96.419366,27.264589],[95.124768,26.573572],[95.155153,26.001307],[94.603249,25.162495],[94.552658,24.675238],[94.106742,23.850741],[93.325188,24.078556],[93.286327,23.043658],[93.060294,22.703111],[93.166128,22.27846],[92.672721,22.041239],[92.146035,23.627499],[91.869928,23.624346],[91.706475,22.985264],[91.158963,23.503527],[91.46773,24.072639],[91.915093,24.130414],[92.376202,24.976693],[91.799596,25.147432],[90.872211,25.132601],[89.920693,25.26975],[89.832481,25.965082],[89.355094,26.014407],[88.563049,26.446526],[88.209789,25.768066],[88.931554,25.238692],[88.306373,24.866079],[88.084422,24.501657],[88.69994,24.233715],[88.52977,23.631142],[88.876312,22.879146],[89.031961,22.055708],[88.888766,21.690588],[88.208497,21.703172],[86.975704,21.495562],[87.033169,20.743308],[86.499351,20.151638],[85.060266,19.478579],[83.941006,18.30201],[83.189217,17.671221],[82.192792,17.016636],[82.191242,16.556664],[81.692719,16.310219],[80.791999,15.951972],[80.324896,15.899185],[80.025069,15.136415],[80.233274,13.835771],[80.286294,13.006261],[79.862547,12.056215],[79.857999,10.357275],[79.340512,10.308854],[78.885345,9.546136],[79.18972,9.216544],[78.277941,8.933047],[77.941165,8.252959],[77.539898,7.965535],[76.592979,8.899276],[76.130061,10.29963],[75.746467,11.308251],[75.396101,11.781245],[74.864816,12.741936],[74.616717,13.992583],[74.443859,14.617222],[73.534199,15.990652],[73.119909,17.92857],[72.820909,19.208234],[72.824475,20.419503],[72.630533,21.356009],[71.175273,20.757441],[70.470459,20.877331],[69.16413,22.089298],[69.644928,22.450775],[69.349597,22.84318],[68.176645,23.691965],[68.842599,24.359134],[71.04324,24.356524],[70.844699,25.215102],[70.282873,25.722229],[70.168927,26.491872],[69.514393,26.940966],[70.616496,27.989196],[71.777666,27.91318],[72.823752,28.961592],[73.450638,29.976413],[74.42138,30.979815],[74.405929,31.692639],[75.258642,32.271105],[74.451559,32.7649],[74.104294,33.441473],[73.749948,34.317699],[74.240203,34.748887],[75.757061,34.504923],[76.871722,34.653544],[77.837451,35.49401],[78.912269,34.321936],[78.811086,33.506198],[79.208892,32.994395],[79.176129,32.48378],[78.458446,32.618164],[78.738894,31.515906],[79.721367,30.882715],[81.111256,30.183481],[80.476721,29.729865],[80.088425,28.79447],[81.057203,28.416095],[81.999987,27.925479],[83.304249,27.364506],[84.675018,27.234901],[85.251779,26.726198],[86.024393,26.630985],[87.227472,26.397898],[88.060238,26.414615],[88.174804,26.810405],[88.043133,27.445819],[88.120441,27.876542],[88.730326,28.086865],[88.814248,27.299316],[88.835643,27.098966],[89.744528,26.719403],[90.373275,26.875724],[91.217513,26.808648],[92.033484,26.83831],[92.103712,27.452614],[91.696657,27.771742],[92.503119,27.896876],[93.413348,28.640629],[94.56599,29.277438],[95.404802,29.031717],[96.117679,29.452802],[96.586591,28.83098],[96.248833,28.411031],[97.327114,28.261583]];
+
+function chronologicalTrips() {
+  return VAULT.trips
+    .map((trip, index) => ({ trip, index }))
+    .sort((a, b) => (a.trip.startDate || '9999').localeCompare(b.trip.startDate || '9999') || a.index - b.index)
+    .map(({ trip }) => trip);
+}
+
+function journeyPoints(trips) {
+  return trips.flatMap(trip => (trip.locationPoints || [])
+    .filter(point => Number.isFinite(point.latitude) && Number.isFinite(point.longitude))
+    .map(point => ({ ...point, trip })));
+}
+
+function geoProject(longitude, latitude) {
+  const left = 44;
+  const top = 28;
+  const width = 492;
+  const height = 464;
+  const x = left + ((longitude - 67.5) / (98.5 - 67.5)) * width;
+  const y = top + ((36.5 - latitude) / (36.5 - 6.5)) * height;
+  return [x, y];
+}
+
+function spreadMapMarkers(projected) {
+  const occupied = [];
+  const offsets = [[0,0],[20,-18],[-20,18],[24,18],[-24,-18],[34,0],[-34,0],[0,34],[0,-34]];
+  return projected.map(entry => {
+    const [x, y] = entry.xy;
+    const [dx, dy] = offsets.find(([ox, oy]) =>
+      occupied.every(([px, py]) => Math.hypot(x + ox - px, y + oy - py) >= 24)
+    ) || offsets[offsets.length - 1];
+    const display = [x + dx, y + dy];
+    occupied.push(display);
+    return { ...entry, display };
+  });
+}
+
+function renderJourneyMap(elId) {
+  const el = document.getElementById(elId);
+  const trips = chronologicalTrips();
+  const points = journeyPoints(trips);
+  const countEl = document.getElementById('map-point-count');
+  countEl.textContent = `${points.length} ${points.length === 1 ? 'point' : 'points'}`;
+
+  if (!points.length) {
+    el.innerHTML = '<p class="journey-empty">No verified location points yet.</p>';
+    return;
+  }
+
+  const outlinePath = INDIA_OUTLINE.map(([lng, lat], i) => {
+    const [x, y] = geoProject(lng, lat);
+    return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ') + ' Z';
+  const projected = spreadMapMarkers(points.map(point => ({ point, xy: geoProject(point.longitude, point.latitude) })));
+  const route = projected.map(({ xy }) => xy.map(n => n.toFixed(1)).join(',')).join(' ');
+  const markers = projected.map(({ point, xy, display }, index) => `
+    ${Math.hypot(display[0] - xy[0], display[1] - xy[1]) > 1 ? `<line class="map-marker-leader" x1="${xy[0].toFixed(1)}" y1="${xy[1].toFixed(1)}" x2="${display[0].toFixed(1)}" y2="${display[1].toFixed(1)}"></line>` : ''}
+    <g class="map-marker" transform="translate(${display[0].toFixed(1)} ${display[1].toFixed(1)})">
+      <circle class="map-marker-halo" r="12"></circle>
+      <circle class="map-marker-dot" r="8"></circle>
+      <text text-anchor="middle" dy="3.5">${index + 1}</text>
+      <title>${escHtml(point.name)} · ${escHtml(point.trip.dateRange)}${point.approximate ? ' · approximate point' : ''}</title>
+    </g>
+  `).join('');
+
+  el.innerHTML = `
+    <svg class="journey-map" viewBox="0 0 580 520" role="img" aria-label="Map of recorded travel locations in chronological order">
+      <path class="india-outline" d="${outlinePath}"></path>
+      ${projected.length > 1 ? `<polyline class="journey-route" points="${route}"></polyline>` : ''}
+      ${markers}
+      <g class="map-north" transform="translate(552 38)"><path d="M0 18 L0 -5 M0 -5 L-4 3 M0 -5 L4 3"></path><text y="30" text-anchor="middle">N</text></g>
+    </svg>
+    <p class="map-note">Numbers follow the timeline. Dashed segments show sequence, not the route travelled; close markers may be offset with leader lines.</p>
+  `;
+}
+
+function renderJourneyTimeline(elId) {
+  const el = document.getElementById(elId);
+  const trips = chronologicalTrips();
+  let pointNumber = 0;
+  el.innerHTML = trips.map(trip => {
+    const mapped = (trip.locationPoints || []).filter(point => Number.isFinite(point.latitude) && Number.isFinite(point.longitude));
+    const numbers = mapped.map(() => ++pointNumber);
+    const pointNames = mapped.map(point => `${escHtml(point.name)}${point.approximate ? ' <span class="approx">approx.</span>' : ''}`).join(' · ');
+    return `
+      <article class="timeline-entry">
+        <div class="timeline-marker">${numbers.length ? numbers.join('–') : '—'}</div>
+        <div class="timeline-copy">
+          <div class="timeline-date">${escHtml(trip.dateRange)}</div>
+          <h4><a href="trips/${trip.slug}.html">${escHtml(trip.name)}</a></h4>
+          <p>${pointNames || 'Location not mapped'}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+// ===========================================================
 // Chart.js helpers (donut)
 // ===========================================================
 
@@ -350,6 +455,8 @@ document.addEventListener('vault:unlocked', () => {
     renderDashboardTable('landing-dashboard');
     renderBehavioralProfile('landing-profile');
     renderTripCards('landing-trips');
+    renderJourneyMap('journey-map');
+    renderJourneyTimeline('journey-timeline');
     renderLandingCharts();
   } else if (window.PAGE_KIND === 'trip') {
     const slug = window.TRIP_SLUG;

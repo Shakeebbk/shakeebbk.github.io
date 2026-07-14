@@ -412,6 +412,110 @@ table.dash-table tfoot td.num { text-align: right; }
 table.dash-table tfoot td.label { letter-spacing: 0.04em; }
 
 /* ===========================================================
+   JOURNEY MAP + TIMELINE
+   =========================================================== */
+.journey-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: 32px;
+  align-items: stretch;
+}
+.journey-map-card,
+.journey-timeline-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 28px;
+}
+.journey-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.journey-card-head h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+}
+.journey-card-head span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+#journey-map { min-height: 440px; }
+.journey-map { display: block; width: 100%; max-height: 520px; margin: 16px auto 0; }
+.india-outline { fill: var(--ivory-2); stroke: var(--rule); stroke-width: 1.4; }
+.journey-route {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-dasharray: 5 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.72;
+}
+.map-marker-halo { fill: rgba(182, 137, 74, 0.2); }
+.map-marker-leader { stroke: var(--gold); stroke-width: 1; opacity: 0.75; }
+.map-marker-dot { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+.map-marker text { fill: var(--paper); font: 600 9px var(--sans); pointer-events: none; }
+.map-north path { fill: none; stroke: var(--ink-soft); stroke-width: 1.3; }
+.map-north text { fill: var(--muted); font: 600 9px var(--sans); letter-spacing: 0.1em; }
+.map-note {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  font-style: italic;
+  padding-top: 14px;
+}
+.journey-empty { color: var(--muted); font-style: italic; padding: 48px 0; text-align: center; }
+#journey-timeline { padding-top: 8px; }
+.timeline-entry {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  position: relative;
+  padding: 18px 0;
+}
+.timeline-entry:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 48px;
+  bottom: -6px;
+  width: 1px;
+  background: var(--line);
+}
+.timeline-marker {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+.timeline-date {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.timeline-copy h4 { font-family: var(--serif); font-size: 18px; line-height: 1.2; margin-bottom: 5px; }
+.timeline-copy p { color: var(--muted); font-size: 12px; }
+.timeline-copy .approx { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ===========================================================
    CHART CARDS
    =========================================================== */
 .chart-grid {
@@ -896,6 +1000,7 @@ table.ledger tfoot td.num { text-align: right; }
   section { padding: 56px 0; }
   .hero { padding: 80px 0 56px; }
   .stat-grid { grid-template-columns: 1fr 1fr; }
+  .journey-grid { grid-template-columns: 1fr; }
   .chart-grid { grid-template-columns: 1fr; }
   .profile-grid { grid-template-columns: 1fr; }
   .trips-grid { grid-template-columns: 1fr; }
@@ -926,4 +1031,6 @@ table.ledger tfoot td.num { text-align: right; }
   .hero-deck { font-size: 17px; }
   .trip-page-hero h1 { font-size: 40px; }
   .trip-page-hero .headline { font-size: 17px; }
+  .journey-map-card, .journey-timeline-card { padding: 20px; }
+  #journey-map { min-height: 0; }
 }
