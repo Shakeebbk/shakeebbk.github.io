@@ -393,17 +393,22 @@ function renderTripLedgerOrSummary(slug) {
   const el = document.getElementById('trip-content');
   if (t.ledger && t.ledger.length) {
     // Dated ledger
+    const hasForeignCurrency = t.ledger.some(r => r.currency && r.currency !== 'INR');
     let prevDate = null;
     const rows = t.ledger.map(r => {
       const breakRow = r.date !== prevDate;
       prevDate = r.date;
       const slug = catSlug(r.category);
+      const currency = r.currency || 'INR';
+      const amount = currency === 'INR'
+        ? `₹${fmtINRDecimal(r.amount)}`
+        : `${escHtml(currency)} ${fmtINRDecimal(r.amount)}`;
       return `
         <tr class="${breakRow ? 'date-break-start' : ''}">
           <td class="date">${breakRow ? escHtml(r.date) : ''}</td>
           <td>${escHtml(r.item)}</td>
           <td><span class="cat-pill cat-${slug}">${escHtml(r.category)}</span></td>
-          <td class="num">₹${fmtINRDecimal(r.amount)}</td>
+          <td class="num">${amount}</td>
         </tr>
       `;
     }).join('');
@@ -415,13 +420,13 @@ function renderTripLedgerOrSummary(slug) {
               <th>Date</th>
               <th>Item / Activity</th>
               <th>Category</th>
-              <th class="num">Amount (INR)</th>
+              <th class="num">${hasForeignCurrency ? 'Amount' : 'Amount (INR)'}</th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>
           <tfoot>
             <tr>
-              <td colspan="3">Segment Archive Total</td>
+              <td colspan="3">${hasForeignCurrency ? 'Audited INR Total' : 'Segment Archive Total'}</td>
               <td class="num">₹${fmtINRDecimal(t.total)}</td>
             </tr>
           </tfoot>
